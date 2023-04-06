@@ -39,4 +39,4 @@ def stability_check(height, top_breadth, base_breadth, Ka, Kp, gamma_soil, gamma
     sliding_force = active_soil_pressure + lateral_surcharge + lateral_water
     stability_factor_sliding =  (base_friction_force + passive_soil_pressure) / sliding_force
 
-    return stability_factor_overturning, stability_factor_sliding, weight, active_soil_pressure, passive_soil_pressure, lateral_surcharge, lateral_water
+    return stability_factor_overturning, stability_factor_sliding, weight, active_soil_pressure, passive_soil_pressure, lateral_surcharge, lateral_water, base_friction_force

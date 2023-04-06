@@ -19,13 +19,21 @@ passive_soil_height = st.number_input("Height of passive soil (m)", min_value=0.
 Kp = st.number_input("Coefficient of passive earth pressure, Kp", min_value=0.0, max_value=10.0, value=2.0, step=0.1)
 
 
-if st.button("Calculate Stability"):
-    stability_factor_overturning, stability_factor_sliding, weight, active_soil_pressure, passive_soil_pressure, lateral_surcharge, lateral_water = stability_check(height, top_breadth, base_breadth, Ka, Kp,gamma_soil, gamma_stone, passive_soil_height, surcharge, water_table)
-    st.write(f"Stability Factor for Overturning: {stability_factor_overturning:.2f}")
-    st.write(f"Stability Factor for Sliding: {stability_factor_sliding:.2f}")
-    st.write(f"Weight of the wall: {weight:.2f} kN/m")
-    st.write(f"Active Soil Pressure: {active_soil_pressure:.2f} kN/m")
-    st.write(f"Passive Soil Pressure: {passive_soil_pressure:.2f} kN/m")
+# if st.button("Calculate Stability"):
+stability_factor_overturning, stability_factor_sliding, weight, active_soil_pressure, passive_soil_pressure, lateral_surcharge, lateral_water, base_friction_force = stability_check(height, top_breadth, base_breadth, Ka, Kp,gamma_soil, gamma_stone, passive_soil_height, surcharge, water_table)
 
-    fig = plot_wall(height, top_breadth, base_breadth, weight, active_soil_pressure, passive_soil_pressure, passive_soil_height, lateral_surcharge, water_table, lateral_water)
+# Stability results
+st.write("## Stability Check Results")
+
+if stability_factor_overturning >= 2:
+    st.markdown(f"<p style='color: green;'><b>Overturning Safety Factor: {stability_factor_overturning:.2f} (OK)</b></p>", unsafe_allow_html=True)
+else:
+    st.markdown(f"<p style='color: red;'><b>Overturning Safety Factor: {stability_factor_overturning:.2f} (NOT OK)</b></p>", unsafe_allow_html=True)
+
+if stability_factor_sliding >= 1.5:
+    st.markdown(f"<p style='color: green;'><b>Sliding Safety Factor: {stability_factor_sliding:.2f} (OK)</b></p>", unsafe_allow_html=True)
+else:
+    st.markdown(f"<p style='color: red;'><b>Sliding Safety Factor: {stability_factor_sliding:.2f} (NOT OK)</b></p>", unsafe_allow_html=True)
+
+    fig = plot_wall(height, top_breadth, base_breadth, weight, active_soil_pressure, passive_soil_pressure, passive_soil_height, lateral_surcharge, water_table, lateral_water, base_friction_force)
     st.pyplot(fig)
